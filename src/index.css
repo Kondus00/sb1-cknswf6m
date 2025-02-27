@@ -1,0 +1,138 @@
+/* src/index.css lub tailwind.css */
+
+/* Import Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Zmienne CSS dla motywów */
+:root {
+  --background-dark: #111827;
+  --background-light: #f9fafb;
+  --text-dark: #d1d5db;
+  --text-light: #1f2937;
+  --teal-dark: #2dd4bf;
+  --teal-light: #0d9488;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Base layer dla globalnych stylów */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply antialiased;
+    margin: 0;
+    line-height: 1.6;
+    background: var(--background-light);
+    color: var(--text-light);
+  }
+
+  /* Motyw ciemny */
+  [data-theme='dark'] body {
+    background: var(--background-dark);
+    color: var(--text-dark);
+  }
+
+  h1 {
+    @apply text-2xl sm:text-3xl font-bold md:text-4xl;
+  }
+  h2 {
+    @apply text-xl sm:text-2xl font-semibold md:text-3xl;
+  }
+  h3 {
+    @apply text-lg sm:text-xl font-medium md:text-2xl;
+  }
+
+  /* Focus states dla dostępności */
+  *:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--teal-light);
+  }
+
+  [data-theme='dark'] *:focus {
+    box-shadow: 0 0 0 2px var(--teal-dark);
+  }
+}
+
+/* Komponenty */
+@layer components {
+  .btn-primary {
+    @apply bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-400 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2;
+  }
+
+  .btn-primary-dark {
+    @apply bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-500 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2;
+  }
+
+  .card {
+    @apply rounded-xl shadow-lg border border-gray-200 bg-white/80 backdrop-blur-sm transition-all duration-300;
+  }
+
+  [data-theme='dark'] .card {
+    @apply border-teal-500/20 bg-gray-800/80;
+  }
+}
+
+/* Preload fontów dla optymalizacji */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZ9hiA.woff2')
+    format('woff2');
+  font-display: swap;
+}
+
+/* Utilsy */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-gray-200/20 shadow-md;
+  }
+
+  [data-theme='dark'] .glass {
+    @apply bg-gray-800/10 border-teal-500/20;
+  }
+
+  /* Gradienty */
+  .gradient-teal {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+  }
+}
+
+/* Styl dla scrollbara */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #14b8a6;
+  border-radius: 4px;
+}
+
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #2dd4bf;
+}

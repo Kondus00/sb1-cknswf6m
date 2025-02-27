@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "first-post",
+    "title": "Jak AI zwiększa ROI w e-commerce: Sekrety analizy danych",
+    "date": "2025-02-25",
+    "description": "Poznaj, jak DialogAI wykorzystuje Vertex AI i Google Analytics 4 do analizy zachowań klientów, zwiększając konwersje o 25% w sklepach online. Praktyczne wskazówki i case study!"
+  },
+  {
+    "slug": "second-post",
+    "title": "Automatyzacja w nieruchomościach: Chatboty, które sprzedają",
+    "date": "2025-02-26",
+    "description": "Dowiedz się, jak chatboty Dialogflow CX zrewolucjonizowały zarządzanie nieruchomościami, skracając czas odpowiedzi o 50%. Historia sukcesu agencji DomInvest."
+  },
+  {
+    "slug": "ai-for-healthcare",
+    "title": "AI w opiece zdrowotnej: Szybsza obsługa pacjentów",
+    "date": "2025-03-01",
+    "description": "Jak DialogAI pomogło klinice MedHealth zautomatyzować umawianie wizyt, redukując czas obsługi o 40% dzięki Vertex AI. Przyszłość medycyny zaczyna się teraz!"
+  },
+  {
+    "slug": "why-choose-dialogai",
+    "title": "Dlaczego warto wybrać DialogAI? 5 powodów",
+    "date": "2025-03-05",
+    "description": "Odkryj, dlaczego 500+ firm zaufało DialogAI w transformacji biznesu z AI. Ekspertyza, innowacje i realne wyniki – poznaj naszą przewagę."
+  }
+]
