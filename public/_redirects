@@ -1,4 +1,2 @@
 /*    /index.html   200
-/admin    /admin/index.html   200
 /admin/*  /admin/index.html   200
-/admin.js /admin.js   200

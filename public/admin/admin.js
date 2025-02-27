@@ -1,4 +1,4 @@
-import CMS from 'decap-cms';
+import CMS from '@staticcms/core';
 
 CMS.init({
   config: {
