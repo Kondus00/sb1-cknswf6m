@@ -4,7 +4,7 @@ CMS.init({
   config: {
     backend: {
       name: 'github',
-      repo: 'kondus00/sb1-cknswf6m', // Upewnij się, że to poprawne repozytorium
+      repo: 'Kondus00/sb1-cknswf6m', // Upewnij się, że to poprawne repozytorium
       branch: 'main', // Upewnij się, że to Twoja główna gałąź
     },
     media_folder: 'public/images/uploads',
