@@ -10,7 +10,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
+          vendor: ['react', 'react-dom', 'react-router-dom', 'decap-cms'], // Dodano decap-cms
         },
       },
     },
@@ -22,8 +22,11 @@ export default defineConfig({
     },
   },
   server: {
+    fs: {
+      strict: false, // Pozwala na elastyczne serwowanie plików
+    },
     hmr: {
-      overlay: false,
+      overlay: true, // Włącz nakładkę błędów HMR
     },
   },
 });
