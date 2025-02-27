@@ -2,10 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import frontMatter from 'front-matter';
-import { ArrowLeft, Share2, BookOpen, Clock, Sun, Moon } from 'lucide-react';
+import { ArrowLeft, Share2, BookOpen, Clock } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import blogPostsData from '../data/blogPosts.json';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -28,7 +26,6 @@ export default function Post() {
   const [readingProgress, setReadingProgress] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [recommendedPosts, setRecommendedPosts] = useState<PostData[]>([]);
   const articleRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -43,9 +40,7 @@ export default function Post() {
   });
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.onChange((v) =>
-      setReadingProgress(Math.round(v * 100))
-    );
+    const unsubscribe = scrollYProgress.onChange((v) => setReadingProgress(Math.round(v * 100)));
     return () => unsubscribe();
   }, [scrollYProgress]);
 
@@ -54,25 +49,23 @@ export default function Post() {
       setIsLoading(true);
       setError(null);
       try {
-        const postData = blogPostsData.find((p) => p.slug === slug);
-        if (!postData) throw new Error('Post nie znaleziony');
+        // Pobierz metadane posta z folderu content/blog w repozytorium
+        const metadataResponse = await fetch(`/content/blog/${slug}.json`, { headers: { Accept: 'application/json' } });
+        if (!metadataResponse.ok) throw new Error('Post nie znaleziony');
+        const metadata = await metadataResponse.json();
 
-        try {
-          const markdownFile = await import(`../content/blog/${slug}.md?raw`);
-          const content = markdownFile.default;
-          const { attributes, body } = frontMatter<PostData>(content);
-          setPost({ ...postData, content: body });
-        } catch (mdError) {
-          console.error('Błąd ładowania Markdown:', mdError);
-          setPost(postData); // Fallback do JSON
-        }
+        // Pobierz treść Markdown z repozytorium
+        const contentResponse = await fetch(`/content/blog/${slug}.md`, { headers: { Accept: 'text/plain' } });
+        if (!contentResponse.ok) throw new Error('Nie można wczytać treści posta');
+        const content = await contentResponse.text();
 
-        // Ustalanie rekomendacji raz przy ładowaniu
-        const recs = blogPostsData
-          .filter((p) => p.slug !== slug)
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 2);
-        setRecommendedPosts(recs);
+        setPost({
+          slug: metadata.slug,
+          title: metadata.title,
+          date: metadata.date,
+          description: metadata.description,
+          content,
+        });
       } catch (fetchError) {
         console.error('Błąd pobierania posta:', fetchError);
         setError(fetchError.message);
@@ -82,7 +75,7 @@ export default function Post() {
       }
     };
     loadPost();
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Przewijanie na górę
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [slug]);
 
   const estimateReadingTime = (content: string): number => {
@@ -108,9 +101,7 @@ export default function Post() {
     return (
       <motion.div
         className={`min-h-screen ${
-          theme === 'dark'
-            ? 'bg-gray-900 text-white'
-            : 'bg-gray-50 text-gray-900'
+          theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'
         } flex items-center justify-center`}
         initial="hidden"
         animate="visible"
@@ -128,9 +119,7 @@ export default function Post() {
     return (
       <motion.div
         className={`min-h-screen ${
-          theme === 'dark'
-            ? 'bg-gray-900 text-white'
-            : 'bg-gray-50 text-gray-900'
+          theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'
         } flex items-center justify-center`}
         initial="hidden"
         animate="visible"
@@ -154,9 +143,7 @@ export default function Post() {
     return (
       <motion.div
         className={`min-h-screen ${
-          theme === 'dark'
-            ? 'bg-gray-900 text-white'
-            : 'bg-gray-50 text-gray-900'
+          theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'
         } flex items-center justify-center`}
         initial="hidden"
         animate="visible"
@@ -213,9 +200,7 @@ export default function Post() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className={`p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                  theme === 'dark'
-                    ? 'bg-gray-700 hover:bg-gray-600'
-                    : 'bg-gray-100 hover:bg-gray-200'
+                  theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
                 }`}
                 aria-label={`Udostępnij artykuł: ${post.title}`}
               >
@@ -241,9 +226,7 @@ export default function Post() {
               <BookOpen size={16} aria-hidden="true" />
               <span>{readingProgress}% przeczytane</span>
             </div>
-            <span
-              className={theme === 'dark' ? 'text-teal-400' : 'text-teal-600'}
-            >
+            <span className={theme === 'dark' ? 'text-teal-400' : 'text-teal-600'}>
               {new Date(post.date).toLocaleDateString('pl-PL')}
             </span>
           </div>
@@ -255,18 +238,14 @@ export default function Post() {
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          className={`prose ${
-            theme === 'dark' ? 'prose-invert' : ''
-          } max-w-none`}
+          className={`prose ${theme === 'dark' ? 'prose-invert' : ''} max-w-none`}
           role="article"
           aria-label={`Treść artykułu: ${post.title}`}
         >
           <ReactMarkdown
             components={{
               p: ({ node, children }) => {
-                const hasImg = node.children.some(
-                  (child) => child.type === 'image'
-                );
+                const hasImg = node.children.some((child) => child.type === 'image');
                 if (hasImg) return <>{children}</>;
                 return (
                   <div
@@ -318,57 +297,6 @@ export default function Post() {
             {post.content}
           </ReactMarkdown>
         </motion.article>
-
-        {/* Social proof i rekomendacje */}
-        <motion.div
-          className="mt-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={fadeIn}
-        >
-          <p
-            className={`text-center text-sm ${
-              theme === 'dark' ? 'text-teal-400' : 'text-teal-600'
-            } mb-8`}
-          >
-            Dołącz do pionierów AI i odkrywaj więcej z DialogAI!
-          </p>
-          <h2
-            className={`text-2xl font-bold mb-6 text-center ${
-              theme === 'dark' ? 'text-white' : 'text-gray-900'
-            }`}
-          >
-            Polecane artykuły
-          </h2>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-            {recommendedPosts.map((rec) => (
-              <motion.div
-                key={rec.slug}
-                className={`p-4 rounded-lg ${
-                  theme === 'dark' ? 'bg-gray-800/80' : 'bg-white'
-                } border shadow-md cursor-pointer`}
-                whileHover={{ scale: 1.03, y: -5 }}
-                onClick={() => navigate(`/blog/${rec.slug}`)}
-              >
-                <h3
-                  className={`text-lg font-semibold ${
-                    theme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}
-                >
-                  {rec.title}
-                </h3>
-                <p
-                  className={`mt-2 text-sm ${
-                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
-                  }`}
-                >
-                  {rec.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </div>
   );
