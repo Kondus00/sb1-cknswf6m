@@ -10,7 +10,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom', 'decap-cms'], // Dodano decap-cms
+          vendor: ['react', 'react-dom', 'react-router-dom', '@staticcms/core'],
         },
       },
     },
@@ -18,7 +18,7 @@ export default defineConfig({
   publicDir: 'public',
   resolve: {
     alias: {
-      'decap-cms': 'decap-cms/dist/decap-cms.js',
+      '@staticcms/core': '@staticcms/core/dist/index.js', // Alias dla Static CMS
     },
   },
   server: {

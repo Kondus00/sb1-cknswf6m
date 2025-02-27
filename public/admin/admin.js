@@ -1,4 +1,4 @@
-import CMS from '@staticcms/core';
+import CMS from '@staticcms/core'; // Zmiana tutaj!
 
 CMS.init({
   config: {
