@@ -3,19 +3,18 @@ import CMS from 'decap-cms';
 CMS.init({
   config: {
     backend: {
-      name: 'github',
-      repo: 'Kondus00/sb1-cknswf6m', // Upewnij się, że to poprawne repozytorium
-      branch: 'main', // Upewnij się, że to Twoja główna gałąź
+      name: 'github', // Używasz GitHub jako backendu
+      repo: 'kondus00/sb1-cknswf6m', // Twoje repozytorium
+      branch: 'main', // Główna gałąź (dostosuj, jeśli używasz innej)
     },
-    media_folder: 'public/images/uploads',
-    public_folder: '/images/uploads',
+    media_folder: 'public/images', // Folder na media
+    public_folder: '/images', // Ścieżka publiczna dla mediów
     collections: [
       {
         name: 'blog',
-        label: 'Blog Posts',
-        folder: 'content/blog',
+        label: 'Blog',
+        folder: 'content/blog', // Folder z postami
         create: true,
-        slug: '{{slug}}',
         fields: [
           { label: 'Title', name: 'title', widget: 'string' },
           { label: 'Date', name: 'date', widget: 'datetime' },
