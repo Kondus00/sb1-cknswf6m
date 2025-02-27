@@ -18,15 +18,15 @@ export default defineConfig({
   publicDir: 'public',
   resolve: {
     alias: {
-      '@staticcms/core': '@staticcms/core/dist/index.js', // Alias dla Static CMS
+      '@staticcms/core': '@staticcms/core/static-cms-core.js', // Uaktualniony alias
     },
   },
   server: {
     fs: {
-      strict: false, // Pozwala na elastyczne serwowanie plików
+      strict: false,
     },
     hmr: {
-      overlay: true, // Włącz nakładkę błędów HMR
+      overlay: true,
     },
   },
 });
